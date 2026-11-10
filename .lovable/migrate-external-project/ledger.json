@@ -1,0 +1,20 @@
+{
+  "source": "code archive",
+  "archive": "portfolio.zip",
+  "updated_at": "2026-11-10",
+  "capabilities": [
+    {"capability":"portfolio UI and interactions","source":"Next.js single-page app","outcome":"migrate to TanStack Start at /; preserve sections, responsive navigation, project details, motion and 3D scene","status":"pending","next_action":"Implement and verify the main page"},
+    {"capability":"schema","source":"No database schema found","outcome":"not applicable; portfolio content is hardcoded","status":"verified","next_action":null},
+    {"capability":"application records","source":"No database or data export found","outcome":"not applicable; projects and timeline are bundled in source","status":"verified","next_action":null},
+    {"capability":"auth identities","source":"Cosmic authentication middleware imported, but all protected routes are commented out and no login flow exists","outcome":"no active sign-in experience to migrate","status":"verified","next_action":null},
+    {"capability":"authorization","source":"No active protected routes","outcome":"no access boundaries to migrate","status":"verified","next_action":null},
+    {"capability":"uploaded file bytes","source":"Portfolio logo, backdrop, and project images referenced by external URLs; CV path referenced but file absent","outcome":"copy available artwork into Lovable assets; CV download cannot be preserved without the missing file","status":"pending","next_action":"Verify imported image assets; request the CV file after preview"},
+    {"capability":"external providers: Web3Forms contact delivery","source":"Contact form posts to api.web3forms.com; its access key is hardcoded in source","outcome":"preserve via a server-side secret; do not copy the key from source","status":"pending","next_action":"Build the validated forwarding route; request key securely before live form verification"},
+    {"capability":"external providers: Cosmic Analytics","source":"CosmicAnalyticsProvider wraps the page","outcome":"not carried over; its source implementation and credentials/configuration are absent","status":"pending","next_action":"Identify a compatible analytics destination or obtain the provider integration details"},
+    {"capability":"public endpoints","source":"GET /api/health","outcome":"preserve as a public read-only health endpoint","status":"pending","next_action":"Implement and verify /api/health"},
+    {"capability":"callbacks, webhooks, schedules","source":"No active callbacks, webhooks, or schedules found","outcome":"none to migrate","status":"verified","next_action":null},
+    {"capability":"secrets","source":"Archive excluded .env; contact key was present in source code","outcome":"never copy credentials into application code; use secure secrets for Web3Forms","status":"pending","next_action":"Request Web3Forms key securely when ready to verify contact delivery"},
+    {"capability":"cutover","source":"Imported code archive; published URL and external callers were not supplied","outcome":"no source cutover or external caller changes performed","status":"pending","next_action":"Confirm source-site cutover and any outside callers after preview"},
+    {"capability":"verification","source":"Migration not implemented yet","outcome":"pending end-to-end page, endpoint, images, and provider checks","status":"pending","next_action":"Verify routes, responsive UI, project modal, health endpoint, and contact delivery when credentials are supplied"}
+  ]
+}

@@ -1,0 +1,5 @@
+- [ ] Migrate the source portfolio page, motion, navigation, project interactions, and design system to `/`.
+- [ ] Port the public health endpoint and Web3Forms contact forwarding without exposing its key.
+- [ ] Add route metadata and migration ledger status.
+- [ ] Verify the page, responsive navigation, project details, health route, tests, and current build.
+- [ ] Hand off missing CV file, Web3Forms credential, analytics integration details, and source cutover details.
