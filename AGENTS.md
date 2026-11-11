@@ -28,3 +28,6 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project architecture
+- Keep the portfolio as a single TanStack Start page with reusable, focused section modules; use TanStack server routes for external HTTP endpoints so page and API behavior remain in the same runtime.
