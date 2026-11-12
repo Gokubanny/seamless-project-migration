@@ -2,14 +2,12 @@ import { lazy, Suspense, useEffect, useState, type FormEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowDown,
-  ArrowDownToLine,
   ArrowDownRight,
   ArrowRight,
   ArrowUp,
   ArrowUpRight,
   Award,
   Braces,
-  Check,
   Code2,
   ExternalLink,
   FileText,
@@ -196,10 +194,8 @@ function Hero() {
             <Button onClick={scrollToProjects} className="h-12 gap-3 rounded-sm bg-portfolio-accent px-5 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5 hover:bg-portfolio-accent/90">
               Explore selected work <ArrowDownRight className="size-4" />
             </Button>
-            <Button variant="outline" asChild className="h-12 gap-3 rounded-sm border-foreground/25 bg-background/20 px-5 text-sm text-foreground hover:border-portfolio-accent/60 hover:bg-portfolio-accent/10">
-              <a href="/Omatule_Marvellous_CV.docx" download="Omatule_Marvellous_CV.docx" aria-label="Download Omatule Marvellous CV, file pending upload">
-                <FileText className="size-4" /> CV unavailable
-              </a>
+            <Button variant="outline" disabled title="The CV file was not included in the portfolio archive" className="h-12 gap-3 rounded-sm border-foreground/25 bg-background/20 px-5 text-sm text-foreground">
+              <FileText className="size-4" /> CV not provided
             </Button>
           </div>
         </motion.div>
@@ -506,6 +502,11 @@ function Footer() {
 
 export default function PortfolioPage() {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [backgroundReady, setBackgroundReady] = useState(false);
+
+  useEffect(() => {
+    setBackgroundReady(!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, []);
 
   useEffect(() => {
     let frame = 0;
@@ -527,7 +528,7 @@ export default function PortfolioPage() {
       <img src={skyImage.url} alt="" aria-hidden="true" className="portfolio-backdrop" />
       <div aria-hidden="true" className="portfolio-shade" />
       <div aria-hidden="true" className="portfolio-grain" />
-      <Suspense fallback={null}><PortfolioBackground /></Suspense>
+      {backgroundReady && <Suspense fallback={null}><PortfolioBackground /></Suspense>}
       <div className="fixed inset-x-0 top-0 z-50 h-[2px] origin-left bg-portfolio-accent shadow-[0_0_10px_var(--portfolio-accent)]" style={{ transform: `scaleX(${scrollProgress})` }} aria-hidden="true" />
       <TopNavigation />
       <Hero />
@@ -537,7 +538,6 @@ export default function PortfolioPage() {
       <Experience />
       <Contact />
       <Footer />
-      <div className="sr-only"><Check /><ArrowDownToLine /><ArrowDownRight /><ExternalLink /></div>
     </main>
   );
 }

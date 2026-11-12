@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, PointMaterial, Points } from "@react-three/drei";
 import * as THREE from "three";
@@ -42,10 +42,11 @@ function FloatingShape({
 
 function Particles() {
   const particlesRef = useRef<THREE.Points>(null);
-  const positions = new Float32Array(1100 * 3);
-  for (let index = 0; index < positions.length; index += 1) {
-    positions[index] = (Math.random() - 0.5) * 20;
-  }
+  const positions = useMemo(() => {
+    const values = new Float32Array(1100 * 3);
+    for (let index = 0; index < values.length; index += 1) values[index] = (Math.random() - 0.5) * 20;
+    return values;
+  }, []);
 
   useFrame((_state, delta) => {
     const points = particlesRef.current;
@@ -64,13 +65,6 @@ function Particles() {
 }
 
 export default function PortfolioBackground() {
-  const shouldRenderCanvas = useRef(true);
-  useEffect(() => {
-    shouldRenderCanvas.current = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  }, []);
-
-  if (!shouldRenderCanvas.current) return null;
-
   return (
     <div className="pointer-events-none fixed inset-0 -z-10 opacity-70" aria-hidden="true">
       <Canvas camera={{ position: [0, 0, 1], fov: 75, near: 0.1, far: 1000 }} dpr={[1, 1.35]}>

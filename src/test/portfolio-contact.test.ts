@@ -7,6 +7,7 @@ const validSubmission = {
   email: "hello@example.com",
   subject: "Project collaboration",
   message: "I would like to discuss a new project together.",
+  website: "",
 };
 
 describe("contact submission validation", () => {
@@ -24,5 +25,9 @@ describe("contact submission validation", () => {
 
   it("rejects missing required contact details", () => {
     expect(contactSubmissionSchema.safeParse({ email: validSubmission.email }).success).toBe(false);
+  });
+
+  it("keeps bot trap content distinguishable for the delivery route", () => {
+    expect(contactSubmissionSchema.safeParse({ ...validSubmission, website: "spam" }).data?.website).toBe("spam");
   });
 });
