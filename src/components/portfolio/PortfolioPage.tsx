@@ -151,7 +151,7 @@ function Hero() {
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-[1fr_19rem] lg:gap-12">
         <motion.div initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: motionEase }}>
           <p className="portfolio-eyebrow mb-7 flex items-center gap-3"><span className="size-2 rounded-full bg-portfolio-accent shadow-[0_0_14px_var(--portfolio-accent)]" />Independent developer · Port Harcourt, Nigeria</p>
-          <h1 className="portfolio-display portfolio-glow-text max-w-5xl text-[clamp(3.25rem,12vw,8.7rem)] font-medium leading-[0.9] tracking-normal text-foreground sm:text-[clamp(4.5rem,10vw,8.7rem)]">
+          <h1 className="portfolio-display portfolio-glow-text max-w-5xl text-6xl font-medium leading-[0.9] tracking-normal text-foreground sm:text-7xl lg:text-8xl">
             Omatule<br /><span className="text-portfolio-accent">Marvellous</span>
           </h1>
           <div className="mt-7 flex min-h-8 items-center gap-3">
