@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useState, type FormEvent } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowDown,
   ArrowDownRight,
@@ -144,38 +144,6 @@ function TopNavigation() {
 }
 
 function Hero() {
-  const prefersReducedMotion = useReducedMotion();
-  const [currentText, setCurrentText] = useState("");
-  const phrases = ["Full-Stack Developer", "Building web experiences", "Turning ideas into software"];
-
-  useEffect(() => {
-    if (prefersReducedMotion) {
-      setCurrentText(phrases[0] ?? "Full-Stack Developer");
-      return;
-    }
-    let phraseIndex = 0;
-    let letterIndex = 0;
-    let deleting = false;
-    let timer: ReturnType<typeof setTimeout>;
-    const step = () => {
-      const phrase = phrases[phraseIndex] ?? phrases[0] ?? "Developer";
-      letterIndex += deleting ? -1 : 1;
-      setCurrentText(phrase.slice(0, Math.max(letterIndex, 0)));
-      if (!deleting && letterIndex === phrase.length) {
-        deleting = true;
-        timer = setTimeout(step, 1350);
-        return;
-      }
-      if (deleting && letterIndex === 0) {
-        deleting = false;
-        phraseIndex = (phraseIndex + 1) % phrases.length;
-      }
-      timer = setTimeout(step, deleting ? 55 : 95);
-    };
-    timer = setTimeout(step, 650);
-    return () => clearTimeout(timer);
-  }, [prefersReducedMotion]);
-
   const scrollToProjects = () => document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
 
   return (
@@ -188,7 +156,7 @@ function Hero() {
           </h1>
           <div className="mt-7 flex min-h-8 items-center gap-3">
             <span className="h-px w-7 bg-portfolio-coral" />
-            <p className="portfolio-display text-lg text-foreground/90 sm:text-xl"><span>{currentText}</span><span className="ml-1 animate-pulse text-portfolio-coral" aria-hidden="true">|</span></p>
+            <p className="portfolio-display text-lg text-foreground/90 sm:text-xl">Full-Stack Developer</p>
           </div>
           <div className="mt-9 flex flex-wrap items-center gap-3">
             <Button onClick={scrollToProjects} className="h-12 gap-3 rounded-sm bg-portfolio-accent px-5 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5 hover:bg-portfolio-accent/90">
@@ -216,8 +184,8 @@ function Hero() {
       </div>
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1, y: prefersReducedMotion ? 0 : [0, 6, 0] }}
-        transition={prefersReducedMotion ? { delay: 1.1 } : { opacity: { delay: 1.1 }, y: { duration: 2.3, repeat: Infinity, ease: "easeInOut" } }}
+        animate={{ opacity: 1, y: [0, 6, 0] }}
+        transition={{ opacity: { delay: 1.1 }, y: { duration: 2.3, repeat: Infinity, ease: "easeInOut" } }}
         className="absolute bottom-6 left-5 flex items-center gap-3 text-muted-foreground sm:left-8 lg:left-12"
       >
         <ArrowDown className="size-3.5 text-portfolio-accent" /><span className="portfolio-eyebrow text-[0.62rem]">Scroll to explore</span>
@@ -524,20 +492,22 @@ export default function PortfolioPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen overflow-clip bg-background text-foreground">
+    <main className="relative min-h-screen overflow-clip text-foreground">
       <img src={skyImage.url} alt="" aria-hidden="true" className="portfolio-backdrop" />
       <div aria-hidden="true" className="portfolio-shade" />
       <div aria-hidden="true" className="portfolio-grain" />
       {backgroundReady && <Suspense fallback={null}><PortfolioBackground /></Suspense>}
       <div className="fixed inset-x-0 top-0 z-50 h-[2px] origin-left bg-portfolio-accent shadow-[0_0_10px_var(--portfolio-accent)]" style={{ transform: `scaleX(${scrollProgress})` }} aria-hidden="true" />
-      <TopNavigation />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Experience />
-      <Contact />
-      <Footer />
+      <div className="relative z-10">
+        <TopNavigation />
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Experience />
+        <Contact />
+        <Footer />
+      </div>
     </main>
   );
 }

@@ -1,14 +1,14 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, PointMaterial, Points } from "@react-three/drei";
 import * as THREE from "three";
 
-const shapes = [
-  { position: [2, 1, -5] as [number, number, number], scale: 0.5, color: "#9ECAD6" },
-  { position: [-3, -1, -8] as [number, number, number], scale: 0.8, color: "#ABDFE8" },
-  { position: [1, -2, -6] as [number, number, number], scale: 0.6, color: "#84D9E4" },
-  { position: [-2, 2, -7] as [number, number, number], scale: 0.4, color: "#AADCD4" },
-  { position: [4, 0, -9] as [number, number, number], scale: 0.7, color: "#9ECAD6" },
+const shapePositions = [
+  { position: [2, 1, -5] as [number, number, number], scale: 0.5 },
+  { position: [-3, -1, -8] as [number, number, number], scale: 0.8 },
+  { position: [1, -2, -6] as [number, number, number], scale: 0.6 },
+  { position: [-2, 2, -7] as [number, number, number], scale: 0.4 },
+  { position: [4, 0, -9] as [number, number, number], scale: 0.7 },
 ];
 
 function FloatingShape({
@@ -40,7 +40,7 @@ function FloatingShape({
   );
 }
 
-function Particles() {
+function Particles({ color }: { color: string }) {
   const particlesRef = useRef<THREE.Points>(null);
   const positions = useMemo(() => {
     const values = new Float32Array(1100 * 3);
@@ -58,21 +58,36 @@ function Particles() {
   return (
     <group rotation={[0, 0, Math.PI / 4]}>
       <Points ref={particlesRef} positions={positions} stride={3} frustumCulled={false}>
-        <PointMaterial transparent color="#B8EEE5" size={0.04} sizeAttenuation depthWrite={false} opacity={0.45} />
+        <PointMaterial transparent color={color} size={0.04} sizeAttenuation depthWrite={false} opacity={0.45} />
       </Points>
     </group>
   );
 }
 
 export default function PortfolioBackground() {
+  const [palette, setPalette] = useState<{ accent: string; coral: string; lime: string } | null>(null);
+
+  useEffect(() => {
+    const styles = getComputedStyle(document.documentElement);
+    setPalette({
+      accent: styles.getPropertyValue("--portfolio-accent").trim(),
+      coral: styles.getPropertyValue("--portfolio-coral").trim(),
+      lime: styles.getPropertyValue("--portfolio-lime").trim(),
+    });
+  }, []);
+
+  if (!palette?.accent || !palette.coral || !palette.lime) return null;
+
+  const shapeColors = [palette.accent, palette.coral, palette.lime, palette.accent, palette.coral];
+
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10 opacity-70" aria-hidden="true">
+    <div className="pointer-events-none fixed inset-0 z-[3] opacity-70" aria-hidden="true">
       <Canvas camera={{ position: [0, 0, 1], fov: 75, near: 0.1, far: 1000 }} dpr={[1, 1.35]}>
         <ambientLight intensity={0.3} />
         <pointLight position={[10, 10, 10]} intensity={0.7} />
-        <Particles />
-        {shapes.map((shape, index) => (
-          <FloatingShape key={index} position={shape.position} scale={shape.scale} color={shape.color} />
+        <Particles color={palette.accent} />
+        {shapePositions.map((shape, index) => (
+          <FloatingShape key={index} position={shape.position} scale={shape.scale} color={shapeColors[index] ?? palette.accent} />
         ))}
       </Canvas>
     </div>
