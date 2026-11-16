@@ -9,3 +9,12 @@ export const contactSubmissionSchema = z.object({
 });
 
 export type ContactSubmission = z.infer<typeof contactSubmissionSchema>;
+
+export function isSameOriginContactRequest(origin: string | null, requestUrl: string): boolean {
+  if (!origin) return false;
+  try {
+    return new URL(origin).origin === new URL(requestUrl).origin;
+  } catch {
+    return false;
+  }
+}

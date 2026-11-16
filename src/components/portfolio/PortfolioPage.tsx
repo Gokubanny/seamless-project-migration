@@ -404,10 +404,11 @@ function Contact() {
       email: String(data.get("email") ?? ""),
       subject: String(data.get("subject") ?? ""),
       message: String(data.get("message") ?? ""),
+      website: String(data.get("website") ?? ""),
     };
     setSending(true);
     try {
-      const response = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      const response = await fetch("/api/public/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
       const result = await response.json() as { success?: boolean; error?: string };
       if (!response.ok || !result.success) throw new Error(result.error ?? "Unable to send your message.");
       toast.success("Message sent", { description: "Thanks for reaching out. I’ll get back to you soon." });

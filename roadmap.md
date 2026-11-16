@@ -1,5 +1,5 @@
-- [ ] Migrate the source portfolio page, motion, navigation, project interactions, and design system to `/`.
-- [ ] Port the public health endpoint and Web3Forms contact forwarding without exposing its key.
-- [ ] Add route metadata and migration ledger status.
-- [ ] Verify the page, responsive navigation, project details, health route, tests, and current build.
-- [ ] Hand off missing CV file, Web3Forms credential, analytics integration details, and source cutover details.
+- [x] Migrate the source portfolio page, motion, navigation, project interactions, and design system to `/`.
+- [x] Port the public health endpoint and secure contact forwarding; test same-origin checks.
+- [x] Add route metadata and migration ledger status.
+- [x] Verify the page, responsive navigation, project details, health route, tests, and current build.
+- [ ] Handoff remaining external actions: choose Web3Forms Pro or its supported browser submission pattern; attach the missing CV; confirm Cosmic Analytics setup; provide the old site address and external callers for cutover.

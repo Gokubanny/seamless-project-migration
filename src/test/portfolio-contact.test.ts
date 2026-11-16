@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { contactSubmissionSchema } from "@/lib/portfolio-contact";
+import { contactSubmissionSchema, isSameOriginContactRequest } from "@/lib/portfolio-contact";
 
 const validSubmission = {
   name: "Marvellous",
@@ -29,5 +29,13 @@ describe("contact submission validation", () => {
 
   it("keeps bot trap content distinguishable for the delivery route", () => {
     expect(contactSubmissionSchema.safeParse({ ...validSubmission, website: "spam" }).data?.website).toBe("spam");
+  });
+
+  it("does not forward an unverified cross-origin request", async () => {
+    expect(isSameOriginContactRequest("https://attacker.example", "https://portfolio.example/api/public/contact")).toBe(false);
+  });
+
+  it("accepts a same-origin form submission", () => {
+    expect(isSameOriginContactRequest("https://portfolio.example", "https://portfolio.example/api/public/contact")).toBe(true);
   });
 });

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { contactSubmissionSchema } from "@/lib/portfolio-contact";
+import { contactSubmissionSchema, isSameOriginContactRequest } from "@/lib/portfolio-contact";
 
-export const Route = createFileRoute("/api/contact")({
+export const Route = createFileRoute("/api/public/contact")({
   server: {
     handlers: {
       POST: async ({ request }) => {
@@ -14,12 +14,7 @@ export const Route = createFileRoute("/api/contact")({
         if (requestSize > 12_000) return Response.json({ error: "Your message is too long." }, { status: 413 });
 
         const origin = request.headers.get("origin");
-        if (!origin) return Response.json({ error: "This request could not be accepted." }, { status: 403 });
-        try {
-          if (new URL(origin).origin !== new URL(request.url).origin) {
-            return Response.json({ error: "This request could not be accepted." }, { status: 403 });
-          }
-        } catch {
+        if (!isSameOriginContactRequest(origin, request.url)) {
           return Response.json({ error: "This request could not be accepted." }, { status: 403 });
         }
 
@@ -33,14 +28,10 @@ export const Route = createFileRoute("/api/contact")({
         }
 
         const parsed = contactSubmissionSchema.safeParse(raw);
-        if (!parsed.success) {
-          return Response.json({ error: "Check each field and try again." }, { status: 400 });
-        }
+        if (!parsed.success) return Response.json({ error: "Check each field and try again." }, { status: 400 });
 
         const { name, email, subject, message, website } = parsed.data;
-        if (website.trim()) {
-          return Response.json({ success: true });
-        }
+        if (website.trim()) return Response.json({ success: true });
 
         const accessKey = process.env["WEB3FORMS_ACCESS_KEY"];
         if (!accessKey) {
