@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState, type FormEvent } from "react";
+import { lazy, Suspense, useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowDown,
@@ -22,6 +22,7 @@ import {
   Server,
   Settings2,
   X,
+  type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,7 +31,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { toast } from "sonner";
 import portraitLogo from "@/assets/portfolio/marvellous-benji-high-resolution-logo-transparent_1.png.asset.json";
 import skyImage from "@/assets/portfolio/cosmic-bg-2m4tagmk1g.jpg.asset.json";
-import { portfolioExperience, portfolioProjects, type PortfolioProject } from "./portfolio-data";
+import { portfolioExperience, visibleProjects, type PortfolioProject } from "./portfolio-data";
 
 const PortfolioBackground = lazy(() => import("./PortfolioBackground"));
 
@@ -215,7 +216,7 @@ function About() {
               I enjoy transforming complex ideas into useful, well-crafted applications. Guided by curiosity and a commitment to continuous learning, I build with JavaScript, React, Node.js, and modern web APIs.
             </p>
             <div className="mt-8 flex flex-wrap gap-x-8 gap-y-4">
-              {[["06+", "core technologies"], ["08", "featured projects"], ["2022", "building since"]].map(([value, label]) => (
+              {[["06+", "core technologies"], [String(visibleProjects.length).padStart(2, "0"), "featured projects"], ["2022", "building since"]].map(([value, label]) => (
                 <div key={label} className="border-l border-portfolio-accent/45 pl-4">
                   <p className="portfolio-display text-2xl text-foreground">{value}</p>
                   <p className="portfolio-eyebrow mt-1 text-[0.59rem] text-muted-foreground">{label}</p>
@@ -272,18 +273,21 @@ function Skills() {
   );
 }
 
+const projectIcons: Record<string, LucideIcon> = { "hr-management-system": Layers2, "health-connect": Award, "medi-core": Server };
+const projectNumber = (project: PortfolioProject) => String(visibleProjects.indexOf(project) + 1).padStart(2, "0");
+
 function ProjectArtwork({ project }: { project: PortfolioProject }) {
-  const Icon = project.id === 1 ? Layers2 : project.id === 4 ? Award : project.id === 6 ? Server : Code2;
+  const Icon = projectIcons[project.slug] ?? Code2;
   return (
     <div className={`relative flex aspect-[1.85/1] overflow-hidden ${project.tone === "one" ? "bg-portfolio-accent/10" : project.tone === "two" ? "bg-portfolio-coral/10" : "bg-portfolio-lime/10"}`}>
-      {project.image ? <img src={project.image} alt={`${project.title} project preview`} loading="lazy" className="portfolio-project-image size-full object-cover" /> : (
+      {project.image ? <img src={project.image.src} alt={project.image.alt} loading="lazy" className="portfolio-project-image size-full object-cover" /> : (
         <div className="flex size-full flex-col items-center justify-center gap-4 bg-gradient-to-br from-background via-secondary/80 to-portfolio-coral/10">
           <Icon className="size-12 text-portfolio-accent/80" strokeWidth={1} />
           <span className="portfolio-eyebrow text-[0.6rem] text-foreground/55">Project preview</span>
         </div>
       )}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent" />
-      <span className="absolute bottom-3 left-4 portfolio-eyebrow text-[0.58rem] text-foreground/85">Selected work / 0{project.id}</span>
+      <span className="absolute bottom-3 left-4 portfolio-eyebrow text-[0.58rem] text-foreground/85">Selected work / {projectNumber(project)}</span>
       <span className="absolute right-3 top-3 flex size-9 items-center justify-center border border-foreground/20 bg-background/80 text-foreground backdrop-blur-sm"><ArrowUpRight className="size-4" /></span>
     </div>
   );
@@ -302,7 +306,7 @@ function ProjectCard({ project, index, onOpen }: { project: PortfolioProject; in
           <span className="mt-1 flex size-9 shrink-0 items-center justify-center border border-foreground/15 text-foreground/70 transition-all hover:border-portfolio-accent hover:text-portfolio-accent"><ArrowUpRight className="size-4" /></span>
         </div>
         <div className="flex flex-wrap gap-2 pb-5">
-          {project.techStack.slice(0, 4).map((technology) => <span key={technology} className="portfolio-eyebrow text-[0.58rem] text-muted-foreground">{technology}</span>)}
+          {project.technologies.slice(0, 4).map((technology) => <span key={technology} className="portfolio-eyebrow text-[0.58rem] text-muted-foreground">{technology}</span>)}
         </div>
         <div className="portfolio-line" />
       </button>
@@ -310,23 +314,86 @@ function ProjectCard({ project, index, onOpen }: { project: PortfolioProject; in
   );
 }
 
+function CaseStudyBlock({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div>
+      <p className="portfolio-eyebrow mb-3">{label}</p>
+      {children}
+    </div>
+  );
+}
+
+function CaseStudyList({ items }: { items: string[] }) {
+  return (
+    <ul className="space-y-2 text-sm leading-6 text-muted-foreground">
+      {items.map((item) => (
+        <li key={item} className="relative pl-4 before:absolute before:left-0 before:top-3 before:size-1 before:bg-portfolio-accent">{item}</li>
+      ))}
+    </ul>
+  );
+}
+
 function ProjectDetails({ project, onClose }: { project: PortfolioProject | null; onClose: () => void }) {
+  const study = project?.caseStudy;
   return (
     <Dialog open={Boolean(project)} onOpenChange={(open) => { if (!open) onClose(); }}>
       <DialogContent className="max-h-[88svh] max-w-3xl overflow-y-auto rounded-sm border-foreground/15 bg-background/98 p-0 text-foreground backdrop-blur-xl sm:max-w-3xl">
-        {project && (
+        {project && study && (
           <>
             <ProjectArtwork project={project} />
             <div className="p-6 sm:p-9">
               <DialogHeader className="text-left">
-                <p className="portfolio-eyebrow mb-3">Selected work / 0{project.id}</p>
+                <div className="mb-3 flex flex-wrap items-center gap-3">
+                  <p className="portfolio-eyebrow">Selected work / {projectNumber(project)}</p>
+                  {project.status && <span className="border border-portfolio-coral/50 px-2 py-0.5 text-[0.7rem] text-portfolio-coral">{project.status}</span>}
+                  {project.companyLabel && <span className="border border-portfolio-accent/40 px-2 py-0.5 text-[0.7rem] text-portfolio-accent">{project.companyLabel}</span>}
+                </div>
                 <DialogTitle className="portfolio-display text-3xl font-medium text-foreground sm:text-4xl">{project.title}</DialogTitle>
-                <DialogDescription className="max-w-2xl pt-3 text-sm leading-7 text-muted-foreground">{project.longDescription}</DialogDescription>
+                {study.short && <p className="portfolio-display max-w-2xl pt-3 text-lg leading-snug text-foreground/90">{study.short}</p>}
+                <DialogDescription className="max-w-2xl pt-3 text-sm leading-7 text-muted-foreground">{study.overview}</DialogDescription>
               </DialogHeader>
+
+              <dl className={`mt-7 grid gap-6 border-t border-foreground/10 pt-6 ${study.role ? "sm:grid-cols-2" : ""}`}>
+                <div>
+                  <dt className="portfolio-eyebrow mb-3">Who it’s for</dt>
+                  <dd className="text-sm leading-7 text-foreground/85">{study.audience}</dd>
+                </div>
+                {study.role && (
+                  <div>
+                    <dt className="portfolio-eyebrow mb-3">My role</dt>
+                    <dd className="text-sm leading-7 text-foreground/85">{study.role}</dd>
+                  </div>
+                )}
+              </dl>
+
+              <div className="mt-7 grid gap-7 border-t border-foreground/10 pt-6 sm:grid-cols-2">
+                <CaseStudyBlock label="The challenge"><p className="text-sm leading-7 text-muted-foreground">{study.challenge}</p></CaseStudyBlock>
+                <CaseStudyBlock label="The approach"><p className="text-sm leading-7 text-muted-foreground">{study.approach}</p></CaseStudyBlock>
+              </div>
+
+              <div className={`mt-7 grid gap-7 border-t border-foreground/10 pt-6 ${study.built?.length ? "sm:grid-cols-2" : ""}`}>
+                {study.built?.length ? <CaseStudyBlock label="What I built"><CaseStudyList items={study.built} /></CaseStudyBlock> : null}
+                <CaseStudyBlock label="Key features"><CaseStudyList items={study.features} /></CaseStudyBlock>
+              </div>
+
               <div className="mt-7 border-t border-foreground/10 pt-6">
                 <p className="portfolio-eyebrow mb-4">Technologies</p>
-                <div className="flex flex-wrap gap-2">{project.techStack.map((tech) => <span key={tech} className="border border-foreground/15 px-3 py-1.5 text-xs text-foreground/75">{tech}</span>)}</div>
+                <div className="flex flex-wrap gap-2">{project.technologies.map((tech) => <span key={tech} className="border border-foreground/15 px-3 py-1.5 text-xs text-foreground/75">{tech}</span>)}</div>
               </div>
+
+              {project.gallery?.length ? (
+                <div className="mt-7 border-t border-foreground/10 pt-6">
+                  <p className="portfolio-eyebrow mb-4">Screens</p>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {project.gallery.map((image) => <img key={image.src} src={image.src} alt={image.alt} loading="lazy" className="w-full border border-foreground/15 object-cover" />)}
+                  </div>
+                </div>
+              ) : null}
+
+              <div className="mt-7 border-t border-foreground/10 pt-6">
+                <CaseStudyBlock label={study.outcomeLabel}><p className="text-sm leading-7 text-foreground/85">{study.outcome}</p></CaseStudyBlock>
+              </div>
+
               <div className="mt-7 flex flex-wrap gap-3">
                 {project.liveDemo && project.liveDemo !== "#" && <Button variant="outline" asChild className="gap-2 rounded-sm border-foreground/20 bg-transparent"><a href={project.liveDemo} target="_blank" rel="noreferrer">Live demo <ExternalLink /></a></Button>}
                 {project.github && project.github !== "#" && <Button variant="ghost" asChild className="gap-2 rounded-sm"><a href={project.github} target="_blank" rel="noreferrer"><Github /> GitHub <ExternalLink className="size-3" /></a></Button>}
@@ -347,8 +414,8 @@ function Projects() {
     <section id="projects" className="portfolio-section scroll-mt-16 border-t border-foreground/10 px-5 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-7xl">
         <SectionIntro index="03" kicker="A few things I’ve made" title="Selected" accent="work." detail="A mix of practical platforms, thoughtful interfaces, and ambitious ideas brought to life across the web." />
-        <div className="grid gap-x-7 gap-y-8 md:grid-cols-2 lg:grid-cols-3">{portfolioProjects.slice(0, visibleCount).map((project, index) => <ProjectCard key={project.id} project={project} index={index} onOpen={() => setSelected(project)} />)}</div>
-        {visibleCount < portfolioProjects.length && <div className="mt-11 flex justify-center"><Button variant="outline" onClick={() => setVisibleCount((count) => count + 3)} className="h-11 gap-3 rounded-sm border-foreground/20 bg-transparent px-5 text-foreground hover:border-portfolio-accent/60 hover:bg-portfolio-accent/10">View more projects <ArrowRight /></Button></div>}
+        <div className="grid gap-x-7 gap-y-8 md:grid-cols-2 lg:grid-cols-3">{visibleProjects.slice(0, visibleCount).map((project, index) => <ProjectCard key={project.id} project={project} index={index} onOpen={() => setSelected(project)} />)}</div>
+        {visibleCount < visibleProjects.length && <div className="mt-11 flex justify-center"><Button variant="outline" onClick={() => setVisibleCount((count) => count + 3)} className="h-11 gap-3 rounded-sm border-foreground/20 bg-transparent px-5 text-foreground hover:border-portfolio-accent/60 hover:bg-portfolio-accent/10">View more projects <ArrowRight /></Button></div>}
         <ProjectDetails project={selected} onClose={() => setSelected(null)} />
       </div>
     </section>
