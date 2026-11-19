@@ -5,12 +5,12 @@ import hopebridgeabout from "@/assets/portfolio/hopebridgeabout.png.asset.json";
 import hopebridgeprogram from "@/assets/portfolio/hopebridgeprogram.png.asset.json";
 import hopebridgesupport from "@/assets/portfolio/hopebrigdesupport.png.asset.json";
 import hrManagementImage from "@/assets/portfolio/hive_azhuuk.png.asset.json";
-import staffhivelogin from "@/assets/portfolio/hive_azhuuk.png.asset.json";
-import staffhiveHr from "@/assets/portfolio/hive_azhuuk.png.asset.json";
-import staffhiveemployee from "@/assets/portfolio/hive_azhuuk.png.asset.json";
-import staffhivepayroll from "@/assets/portfolio/hive_azhuuk.png.asset.json";
+import staffhiveHrattendance from "@/assets/portfolio/hivehr.png.asset.json";
+import staffhiveHr from "@/assets/portfolio/hivehrattendance.png.asset.json";
+import staffhiveemployee from "@/assets/portfolio/hiveemployee.png.asset.json";
+import staffhiveattendance from "@/assets/portfolio/hiveemployeeattendance.png.asset.json";
 import mediCoreImage from "@/assets/portfolio/hms_f4bngw.png.asset.json";
-import medicorelogin from "@/assets/portfolio/hms_f4bngw.png.asset.json";
+import medicorelogin from "@/assets/portfolio/medicorelogin.png.asset.json";
 import medicoredoctors from "@/assets/portfolio/hms_f4bngw.png.asset.json";
 import medicorepatient from "@/assets/portfolio/hms_f4bngw.png.asset.json";
 import medicorepharmacy from "@/assets/portfolio/hms_f4bngw.png.asset.json";
@@ -558,15 +558,15 @@ export const portfolioProjects: PortfolioProject[] = [
     id: "hr-management-system",
     slug: "hr-management-system",
     title: "HR Management System",
-    description: "A people-first platform for employee management, payroll, and performance tracking.",
+    description: "A people-first platform for employee management, attendance, and performance tracking.",
     technologies: ["React", "Node.js", "MongoDB", "Express", "JWT", "Chart.js"],
     visible: true,
     image: { src: hrManagementImage.url, alt: "HR Management System project preview" },
     gallery: [
-      {src: staffhivelogin.url, alt: "Login page"},
       {src: staffhiveHr.url, alt: "Hr Workspace"},
+      {src: staffhiveHrattendance.url, alt: "Hr Attendance Management page"},
       {src: staffhiveemployee.url, alt: "Employee Dashboard"},
-      {src: staffhivepayroll.url, alt: "Employee Payroll"},
+      {src: staffhiveattendance.url, alt: "Employee Attendance Management page"},
     ],
     liveDemo: "https://staff-hive.onrender.com",
     github: "https://github.com/Gokubanny/Staff-Hive.git",
