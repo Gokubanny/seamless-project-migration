@@ -163,8 +163,8 @@ function Hero() {
             <Button onClick={scrollToProjects} className="h-12 gap-3 rounded-sm bg-portfolio-accent px-5 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5 hover:bg-portfolio-accent/90">
               Explore selected work <ArrowDownRight className="size-4" />
             </Button>
-            <Button variant="outline" disabled title="The CV file was not included in the portfolio archive" className="h-12 gap-3 rounded-sm border-foreground/25 bg-background/20 px-5 text-sm text-foreground">
-              <FileText className="size-4" /> CV not provided
+            <Button variant="outline" title="The CV file was not included in the portfolio archive" className="h-12 gap-3 rounded-sm border-foreground/25 bg-background/20 px-5 text-sm text-foreground">
+              <FileText className="size-4" href=".//MyCV.docx" /> Download my CV
             </Button>
           </div>
         </motion.div>
@@ -199,13 +199,13 @@ function Hero() {
 function About() {
   const skills = [
     { name: "HTML", level: 85 }, { name: "CSS", level: 90 }, { name: "JavaScript", level: 78 },
-    { name: "React", level: 90 }, { name: "Node.js", level: 80 }, { name: "APIs", level: 85 },
+    { name: "React", level: 90 }, { name: "Node.js", level: 80 }, { name: "APIs", level: 85 }, { name: "Python", level: 20 },
   ];
 
   return (
     <section id="about" className="portfolio-section scroll-mt-16 border-t border-foreground/10 px-5 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-7xl">
-        <SectionIntro index="01" kicker="The person behind the pixels" title="A bit about" accent="me." detail="Curiosity-driven development with an eye on the details that make software feel effortless." />
+        <SectionIntro index="01" kicker="The person behind the pixels" title="A bit about" accent="me." detail="Curiosity driven development with an eye on the details that make software feel effortless." />
         <div className="grid gap-12 lg:grid-cols-[1fr_0.82fr] lg:gap-20">
           <motion.div initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
             <p className="portfolio-display text-2xl leading-relaxed text-foreground sm:text-3xl">
@@ -213,7 +213,7 @@ function About() {
             </p>
             <div className="my-8 portfolio-line" />
             <p className="max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
-              I enjoy transforming complex ideas into useful, well-crafted applications. Guided by curiosity and a commitment to continuous learning, I build with JavaScript, React, Node.js, and modern web APIs.
+              I enjoy transforming complex ideas into useful, well-crafted applications. Guided by curiosity and a commitment to continuous learning, I build with JavaScript, React, Node.js, modern web APIs and a bit of Python.
             </p>
             <div className="mt-8 flex flex-wrap gap-x-8 gap-y-4">
               {[["06+", "core technologies"], [String(visibleProjects.length).padStart(2, "0"), "featured projects"], ["2022", "building since"]].map(([value, label]) => (
