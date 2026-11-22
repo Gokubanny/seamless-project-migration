@@ -32,6 +32,7 @@ import { toast } from "sonner";
 import portraitLogo from "@/assets/portfolio/marvellous-benji-high-resolution-logo-transparent_1.png.asset.json";
 import skyImage from "@/assets/portfolio/cosmic-bg-2m4tagmk1g.jpg.asset.json";
 import { portfolioExperience, visibleProjects, type PortfolioProject } from "./portfolio-data";
+import { contactSubmissionSchema } from "@/lib/portfolio-contact";
 
 const PortfolioBackground = lazy(() => import("./PortfolioBackground"));
 
@@ -163,8 +164,10 @@ function Hero() {
             <Button onClick={scrollToProjects} className="h-12 gap-3 rounded-sm bg-portfolio-accent px-5 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5 hover:bg-portfolio-accent/90">
               Explore selected work <ArrowDownRight className="size-4" />
             </Button>
-            <Button variant="outline" title="The CV file was not included in the portfolio archive" className="h-12 gap-3 rounded-sm border-foreground/25 bg-background/20 px-5 text-sm text-foreground">
-              <FileText className="size-4" href=".//MyCV.docx" /> Download my CV
+            <Button asChild variant="outline" className="h-12 gap-3 rounded-sm border-foreground/25 bg-background/20 px-5 text-sm text-foreground">
+              <a href="/Omatule-Marvellous-CV.docx" download="Omatule-Marvellous-CV.docx">
+                <FileText className="size-4" /> Download my CV
+              </a>
             </Button>
           </div>
         </motion.div>
@@ -466,18 +469,36 @@ function Contact() {
     if (honeypot) return;
     const form = event.currentTarget;
     const data = new FormData(form);
-    const body = {
+    const raw = {
       name: String(data.get("name") ?? ""),
       email: String(data.get("email") ?? ""),
       subject: String(data.get("subject") ?? ""),
       message: String(data.get("message") ?? ""),
       website: String(data.get("website") ?? ""),
     };
+
+    const parsed = contactSubmissionSchema.safeParse(raw);
+    if (!parsed.success) {
+      toast.error("Your message wasn’t sent", { description: "Check each field and try again." });
+      return;
+    }
+
+    const accessKey = import.meta.env["VITE_WEB3FORMS_ACCESS_KEY"] as string | undefined;
+    if (!accessKey) {
+      toast.error("Your message wasn’t sent", { description: "Message delivery is not available right now. Please email me directly." });
+      return;
+    }
+
+    const { name, email, subject, message } = parsed.data;
     setSending(true);
     try {
-      const response = await fetch("/api/public/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-      const result = await response.json() as { success?: boolean; error?: string };
-      if (!response.ok || !result.success) throw new Error(result.error ?? "Unable to send your message.");
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ access_key: accessKey, name, email, subject, message, from_name: "Omatule Marvellous Portfolio" }),
+      });
+      const result = await response.json() as { success?: boolean; message?: string };
+      if (!response.ok || !result.success) throw new Error(result.message ?? "Unable to send your message.");
       toast.success("Message sent", { description: "Thanks for reaching out. I’ll get back to you soon." });
       form.reset();
     } catch (error) {

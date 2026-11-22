@@ -10,9 +10,17 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
+  // Static export: no server function, no SSR worker. The whole site is
+  // prerendered to plain HTML/CSS/JS that any static host can serve.
+  nitro: false,
   tanstackStart: {
-    // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-    // nitro/vite builds from this
-    server: { entry: "server" },
+    prerender: {
+      enabled: true,
+      // Off, not on: the crawler treats every <a href> as a page to render,
+      // including links to static files (e.g. the CV download), and clobbers
+      // them with rendered HTML. All real routes are static file routes, so
+      // auto static-path discovery finds them without crawling.
+      crawlLinks: false,
+    },
   },
 });
