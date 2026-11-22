@@ -1,5 +1,12 @@
 import graveHavenImage from "@/assets/portfolio/grave-haven_lzzxti.png.asset.json";
+import graveHaventailor from "@/assets/portfolio/grave-haventailor.png.asset.json";
+import graveHavencustomer from "@/assets/portfolio/grave-havencustomer.png.asset.json";
+import graveHavenabout from "@/assets/portfolio/grave-havenabout.png.asset.json";
 import healthConnectImage from "@/assets/portfolio/health-connect_bb9n9k.png.asset.json";
+import healthConnectabout from "@/assets/portfolio/health-connectabout.png.asset.json";
+import healthConnectdoctor from "@/assets/portfolio/health-connectdoctor.png.asset.json";
+import healthConnectpaitent from "@/assets/portfolio/health-connectpatient.png.asset.json";
+import healthConnectconsultation from "@/assets/portfolio/health-connectconsultation.png.asset.json";
 import hopeBridgeImage from "@/assets/portfolio/image_w71kek.png.asset.json"; 
 import hopebridgeabout from "@/assets/portfolio/hopebridgeabout.png.asset.json";
 import hopebridgeprogram from "@/assets/portfolio/hopebridgeprogram.png.asset.json";
@@ -15,6 +22,10 @@ import medicoredoctors from "@/assets/portfolio/hms_f4bngw.png.asset.json";
 import medicorepatient from "@/assets/portfolio/hms_f4bngw.png.asset.json";
 import medicorepharmacy from "@/assets/portfolio/hms_f4bngw.png.asset.json";
 import novusImage from "@/assets/portfolio/novus_iygd53.png.asset.json";
+import geostaffadmin from "@/assets/portfolio/goestaffadmin.png.asset.json";
+import geostaffemployee from "@/assets/portfolio/goestaffemployee.png.asset.json";
+import geostaffaddress from "@/assets/portfolio/goestaffaddress.png.asset.json";
+import geostaffmanagement from "@/assets/portfolio/goestaffmanagemement.png.asset.json";
 import tracleadsImage from "@/assets/portfolio/tracleads-portfolio-mockup.png.asset.json";
 import tracleadsdashboard from "@/assets/portfolio/tracleads-dashoard-mockup.png.asset.json";
 import tracleadsworksetup from "@/assets/portfolio/tracleads-workspace-setup-mockup.png.asset.json";
@@ -358,6 +369,12 @@ export const portfolioProjects: PortfolioProject[] = [
     technologies: ["TypeScript", "Tailwind CSS", "Node.js", "Express.js", "MongoDB"],
     visible: true,
     image: { src: novusImage.url, alt: "Geostaff Address Verification System project preview" },
+    gallery: [
+      {src: geostaffadmin.url, alt: "Geostaff Admin Dashboard"},
+      {src: geostaffemployee.url, alt: "Geostaff Employee Dashboard"},
+      {src: geostaffaddress.url, alt: "Geostaff Address details  Page"},
+      {src: geostaffmanagement.url, alt: "Geostaff Employee Management List Page"},
+    ],
     liveDemo: "https://novus-vy80.onrender.com",
     tone: "two",
     caseStudy: {
@@ -497,6 +514,11 @@ export const portfolioProjects: PortfolioProject[] = [
     featured: true,
     visible: true,
     image: { src: graveHavenImage.url, alt: "Grave Haven project preview" },
+    gallery: [
+      {src: graveHavenabout.url, alt: "Grave Haven About Page"},
+      {src: graveHavencustomer.url, alt: "Grave Haven Customer Dashboard"},
+      {src: graveHaventailor.url, alt: "Grave Haven Tailor Dashboard"},
+    ],
     liveDemo: "https://grave-haven-frontend.onrender.com",
     github: "https://github.com/Gokubanny/grave-haven.git",
     tone: "three",
@@ -626,6 +648,12 @@ export const portfolioProjects: PortfolioProject[] = [
     technologies: ["React", "TypeScript", "Tailwind CSS", "Node.js", "Express.js", "MongoDB"],
     visible: true,
     image: { src: healthConnectImage.url, alt: "Health Connect project preview" },
+    gallery: [
+      {src: healthConnectabout.url, alt: "HealthConnect About Page"},
+      {src: healthConnectdoctor.url, alt: "HealthConnect Doctor Dashboard"},
+      {src: healthConnectpaitent.url, alt: "HealthConnect Patient Dashboard"},
+      {src: healthConnectconsultation.url, alt: "HealthConnect Paitent Consultation Page"},
+    ],
     liveDemo: "https://healthconnect-frontend-qa77.onrender.com",
     github: "https://github.com/Gokubanny/New-Health-Connect",
     tone: "one",
