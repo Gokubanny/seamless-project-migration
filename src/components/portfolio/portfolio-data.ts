@@ -19,8 +19,8 @@ import staffhiveattendance from "@/assets/portfolio/hiveemployeeattendance.png.a
 import mediCoreImage from "@/assets/portfolio/hms_f4bngw.png.asset.json";
 import medicorelogin from "@/assets/portfolio/medicorelogin.png.asset.json";
 import medicoredoctors from "@/assets/portfolio/hms_f4bngw.png.asset.json";
-import medicorepatient from "@/assets/portfolio/hms_f4bngw.png.asset.json";
-import medicorepharmacy from "@/assets/portfolio/hms_f4bngw.png.asset.json";
+import medicorepatient from "@/assets/portfolio/medicore-paitentdashboard.png.asset.json";
+import medicorehospital from "@/assets/portfolio/medicore-dashboard.png.asset.json";
 import novusImage from "@/assets/portfolio/novus_iygd53.png.asset.json";
 import geostaffadmin from "@/assets/portfolio/goestaffadmin.png.asset.json";
 import geostaffemployee from "@/assets/portfolio/goestaffemployee.png.asset.json";
@@ -151,9 +151,9 @@ export const portfolioProjects: PortfolioProject[] = [
     image: { src: mediCoreImage.url, alt: "Medi-core Landing Page" },
     gallery: [
       {src: medicorelogin.url, alt: "Medicore login page"},
+      {src: medicorehospital.url, alt: "Pharmacy's Dashboard"},
       {src: medicoredoctors.url, alt: "Doctor's Dashboard and workspace"},
       {src: medicorepatient.url, alt: "Patient's Dahboard"},
-      {src: medicorepharmacy.url, alt: "Pharmacy's Dashboard"},
     ],
     liveDemo: "https://medicore-xo9h.onrender.com",
     github: "https://github.com/Gokubanny/medicore-health-platform.git",
@@ -375,7 +375,7 @@ export const portfolioProjects: PortfolioProject[] = [
       {src: geostaffaddress.url, alt: "Geostaff Address details  Page"},
       {src: geostaffmanagement.url, alt: "Geostaff Employee Management List Page"},
     ],
-    liveDemo: "https://novus-vy80.onrender.com",
+    // liveDemo: "https://novus-vy80.onrender.com",
     tone: "two",
     caseStudy: {
       audience: "Teams that need to verify addresses and want to strengthen security in their applications.",
